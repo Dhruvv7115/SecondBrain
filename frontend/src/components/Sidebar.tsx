@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import BrainIcon from "./icons/BrainIcon";
 import SidebarItem from "./SidebarItem";

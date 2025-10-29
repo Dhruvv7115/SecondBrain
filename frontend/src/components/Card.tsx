@@ -130,12 +130,6 @@ export default function Card({
 		return url.replace("x.com", "twitter.com");
 	};
 
-	// Extract tweet ID from URL
-	const getTweetId = (url: string) => {
-		const match = url.match(/status\/(\d+)/);
-		return match ? match[1] : null;
-	};
-
 	// Loading Component
 	const LoadingState = () => (
 		<div className="flex flex-col items-center justify-center p-8 min-h-[200px]">

@@ -3,7 +3,6 @@ import type { IconProps } from ".";
 // components/icons/InstagramIcon.tsx
 export default function InstagramIcon({
 	size = 20,
-	color = "currentColor",
 }: IconProps) {
 	return (
 		<svg

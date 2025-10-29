@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from ".";
 export default function BrainIcon({
 	size = 20,
