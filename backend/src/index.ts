@@ -19,6 +19,10 @@ app.use("/api/v1/link", linkRouter);
 // app.use("api/v1/tag", tagRouter);
 app.use("/api/v1/content", contentRouter);
 
+app.get("/", (req, res) => {
+	res.send("API is running...");
+});
+
 const port = process.env.PORT || 3000;
 
 mongoose

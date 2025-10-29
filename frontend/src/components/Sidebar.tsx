@@ -12,6 +12,7 @@ import CrossIcon from "./icons/CrossIcon";
 import axios from "axios";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const items = [
 	{
@@ -67,9 +68,10 @@ export default function Sidebar({
 		setLogout(true);
 		localStorage.removeItem("token");
 		setTimeout(() => {
+			toast.success("Logged out successfully");
 			navigate("/signin");
 			setLogout(false);
-		}, 2000);
+		}, 1500);
 	};
 	useEffect(() => {
 		fetchUserDetails();

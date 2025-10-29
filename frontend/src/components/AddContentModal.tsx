@@ -10,6 +10,7 @@ import PlusIcon from "./icons/PlusIcon";
 import TagIcon from "./icons/TagIcon";
 import axios from "axios";
 import ExclamationIcon from "./icons/ExclamationIcon";
+import { toast } from "sonner";
 
 export default function AddContentModal({
 	open,
@@ -70,6 +71,7 @@ export default function AddContentModal({
 			setType("youtube");
 			setTags([]);
 			console.log(response);
+			toast.success("Content added successfully");
 			onClose();
 		} catch (error: any) {
 			console.error(error);

@@ -6,7 +6,6 @@ import PlusIcon from "../components/icons/PlusIcon";
 import ShareIcon from "../components/icons/ShareIcon";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
-import { filter } from "motion/react-client";
 
 function Dashboard() {
 	const [addModalOpen, setAddModalOpen] = useState(false);
