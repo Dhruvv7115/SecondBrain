@@ -17,14 +17,14 @@ const items = [
 	{
 		title: "All Content",
 		icon: <HomeIcon size={20} />,
-		href: "/dashboard",
 		active: true, // Track active state
+		type: "all",
 	},
 	{
 		title: "Youtube",
 		icon: <YoutubeIcon size={20} />,
-		href: "/dashboard/youtube",
 		count: 12, // Optional: show content count
+		type: "youtube",
 	},
 	{
 		title: "Twitter",
@@ -34,14 +34,14 @@ const items = [
 				color="black"
 			/>
 		),
-		href: "/dashboard/twitter",
-		count: 8,
+		count: 3,
+		type: "tweet",
 	},
 	{
 		title: "Instagram",
 		icon: <InstagramIcon />,
-		href: "/dashboard/instagram",
 		count: 5,
+		type: "instagram",
 	},
 ];
 interface User {
@@ -52,9 +52,11 @@ interface User {
 export default function Sidebar({
 	isOpen,
 	onClose,
+	filter,
 }: {
 	isOpen: boolean;
 	onClose: () => void;
+	filter: (type: string) => void;
 }) {
 	const [activeItem, setActiveItem] = useState("All Content");
 	const [user, setUser] = useState<User | null>(null);
@@ -134,10 +136,12 @@ export default function Sidebar({
 									key={item.title}
 									title={item.title}
 									icon={item.icon}
-									href={item.href}
 									count={item.count}
 									active={activeItem === item.title}
-									onClick={() => setActiveItem(item.title)}
+									onClick={() => {
+										filter(item.type || "");
+										setActiveItem(item.title);
+									}}
 								/>
 							))}
 						</div>
@@ -220,7 +224,6 @@ export default function Sidebar({
 									key={item.title}
 									title={item.title}
 									icon={item.icon}
-									href={item.href}
 									count={item.count}
 									active={activeItem === item.title}
 									onClick={() => setActiveItem(item.title)}

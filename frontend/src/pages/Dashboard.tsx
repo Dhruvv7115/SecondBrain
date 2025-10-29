@@ -6,6 +6,7 @@ import PlusIcon from "../components/icons/PlusIcon";
 import ShareIcon from "../components/icons/ShareIcon";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
+import { filter } from "motion/react-client";
 
 function Dashboard() {
 	const [addModalOpen, setAddModalOpen] = useState(false);
@@ -13,6 +14,7 @@ function Dashboard() {
 
 	// Sample data - replace with your actual data
 	const [cards, setCards] = useState<CardProps[]>([]);
+	const [filteredCards, setFilteredCards] = useState<CardProps[]>(cards);
 
 	function handleDelete(id: string) {
 		setCards((prevCards) => prevCards.filter((card) => card._id !== id));
@@ -42,11 +44,19 @@ function Dashboard() {
 			.then((response: any) => {
 				console.log(response.data.content);
 				setCards(response.data.content);
+				setFilteredCards(response.data.content);
 			})
 			.catch((error: any) => {
 				console.error(error);
 			});
 	}, [addModalOpen]);
+	const filterCardsByType = (type: string) => {
+		if (type === "all") {
+			setFilteredCards(cards);
+			return;
+		}
+		setFilteredCards(cards.filter((card) => card.type === type));
+	};
 
 	return (
 		<div className="min-h-screen bg-neutral-100">
@@ -62,6 +72,7 @@ function Dashboard() {
 			<Sidebar
 				isOpen={sidebarOpen}
 				onClose={() => setSidebarOpen(false)}
+				filter={filterCardsByType}
 			/>
 
 			{/* Main Content */}
@@ -143,8 +154,8 @@ function Dashboard() {
 
 					{/* Masonry Grid */}
 					<div className="columns-1 md:columns-2 xl:columns-3 2xl:columns-4gap-4 space-y-4">
-						{cards?.length > 0 &&
-							cards.map((card) => (
+						{filteredCards?.length > 0 &&
+							filteredCards.map((card) => (
 								<div
 									key={card.link}
 									className="break-inside-avoid"
@@ -161,7 +172,7 @@ function Dashboard() {
 					</div>
 
 					{/* Empty State */}
-					{cards?.length === 0 && (
+					{filteredCards?.length === 0 && (
 						<div className="flex flex-col items-center justify-center py-12">
 							<div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
 								<PlusIcon
