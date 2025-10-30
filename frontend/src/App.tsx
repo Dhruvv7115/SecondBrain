@@ -3,15 +3,23 @@ import Dashboard from "./pages/Dashboard";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import { Toaster } from "sonner";
+import Protected from "./components/Protected";
 
 function App() {
 	return (
 		<BrowserRouter>
-			<Toaster position="top-center" richColors />
+			<Toaster
+				position="top-center"
+				richColors
+			/>
 			<Routes>
 				<Route
 					path="/"
-					element={<Dashboard />}
+					element={
+						<Protected>
+							<Dashboard />
+						</Protected>
+					}
 				/>
 				<Route
 					path="/signup"
