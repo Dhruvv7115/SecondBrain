@@ -45,7 +45,12 @@ const getSharedLink = async (req: Request, res: Response) => {
 
 		return res
 			.status(200)
-			.json({ message: "Get shared link content successful", content });
+			.json({
+				message: "Get shared link content successful",
+				content,
+				// @ts-ignore
+				owner: content[0]?.userId?.username,
+			});
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ message: "Internal Server Error" });
