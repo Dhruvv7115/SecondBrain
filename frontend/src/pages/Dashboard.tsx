@@ -6,6 +6,7 @@ import PlusIcon from "../components/icons/PlusIcon";
 import ShareIcon from "../components/icons/ShareIcon";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
+import { toast } from "sonner";
 
 function Dashboard() {
 	const [addModalOpen, setAddModalOpen] = useState(false);
@@ -30,6 +31,31 @@ function Dashboard() {
 			.catch((error: any) => {
 				console.error(error);
 			});
+	}
+
+	async function handleShare() {
+		try {
+			const response = await axios.post(
+				`${import.meta.env.VITE_BACKEND_URL}/link/share`,
+				{
+					share: true,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				},
+			);
+			if (response.status === 200) {
+				console.log(response.data);
+				navigator.clipboard.writeText(response.data.link.hash);
+				toast.success("Link copied to clipboard");
+			}
+		} catch (error) {
+			console.error(error);
+			return;
+		}
 	}
 
 	useEffect(() => {
@@ -72,6 +98,18 @@ function Dashboard() {
 				isOpen={sidebarOpen}
 				onClose={() => setSidebarOpen(false)}
 				filter={filterCardsByType}
+				count={{
+					youtube: filteredCards.filter(
+						(card) => card.type === "youtube",
+					).length,
+					tweet: filteredCards.filter(
+						(card) => card.type === "tweet",
+					).length,
+					instagram: filteredCards.filter(
+						(card) => card.type === "instagram",
+					).length,
+					all: filteredCards.length,
+				}}
 			/>
 
 			{/* Main Content */}
@@ -129,6 +167,7 @@ function Dashboard() {
 								variant="secondary"
 								startIcon={<ShareIcon size={20} />}
 								className="hidden sm:flex"
+								onClick={handleShare}
 							>
 								Share
 							</Button>

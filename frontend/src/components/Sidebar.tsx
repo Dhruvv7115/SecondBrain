@@ -14,7 +14,13 @@ import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-const items = [
+interface Item {
+	title: string;
+	icon: React.ReactNode;
+	active?: boolean;
+	type: "all" | "youtube" | "tweet" | "instagram";
+}
+const items: Item[] = [
 	{
 		title: "All Content",
 		icon: <HomeIcon size={20} />,
@@ -24,7 +30,6 @@ const items = [
 	{
 		title: "Youtube",
 		icon: <YoutubeIcon size={20} />,
-		count: 12, // Optional: show content count
 		type: "youtube",
 	},
 	{
@@ -35,16 +40,15 @@ const items = [
 				color="black"
 			/>
 		),
-		count: 3,
 		type: "tweet",
 	},
 	{
 		title: "Instagram",
 		icon: <InstagramIcon />,
-		count: 5,
 		type: "instagram",
 	},
 ];
+
 interface User {
 	_id: string;
 	username: string;
@@ -54,10 +58,12 @@ export default function Sidebar({
 	isOpen,
 	onClose,
 	filter,
+	count,
 }: {
 	isOpen: boolean;
 	onClose: () => void;
 	filter: (type: string) => void;
+	count: Record<"youtube" | "tweet" | "instagram" | "all", number>;
 }) {
 	const [activeItem, setActiveItem] = useState("All Content");
 	const [user, setUser] = useState<User | null>(null);
@@ -93,6 +99,7 @@ export default function Sidebar({
 			console.error("Error fetching user details:", error);
 		}
 	};
+
 	return (
 		<>
 			{/* Desktop Sidebar */}
@@ -117,28 +124,30 @@ export default function Sidebar({
 					</div>
 
 					{/* User Profile Section */}
-					<div className="p-4 border-b border-gray-200">
-						<div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
-							<div className="w-10 h-10 bg-linear-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-								{user?.username?.charAt(0).toUpperCase() || "J"}
-							</div>
-							<div className="flex-1">
-								<p className="text-sm font-medium text-gray-900">
-									{user?.username || "John Doe"}
-								</p>
+					{user && (
+						<div className="p-4 border-b border-gray-200">
+							<div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+								<div className="w-10 h-10 bg-linear-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+									{user?.username?.charAt(0).toUpperCase() || "J"}
+								</div>
+								<div className="flex-1">
+									<p className="text-sm font-medium text-gray-900">
+										{user?.username || "John Doe"}
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
+					)}
 
 					{/* Navigation Items */}
 					<div className="flex-1 p-4 overflow-y-auto">
 						<div className="space-y-1">
-							{items.map((item) => (
+							{items.map((item: Item) => (
 								<SidebarItem
 									key={item.title}
 									title={item.title}
 									icon={item.icon}
-									count={item.count}
+									count={count[item.type]}
 									active={activeItem === item.title}
 									onClick={() => {
 										filter(item.type || "");
@@ -206,17 +215,20 @@ export default function Sidebar({
 					{/* ... Copy the same content structure from desktop ... */}
 
 					{/* User Profile Section */}
-					<div className="p-4 border-b border-gray-200">
-						<div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
-							<div className="w-10 h-10 bg-linear-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-								JD
-							</div>
-							<div className="flex-1">
-								<p className="text-sm font-medium text-gray-900">John Doe</p>
-								<p className="text-xs text-gray-500">john@example.com</p>
+					{user && (
+						<div className="p-4 border-b border-gray-200">
+							<div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+								<div className="w-10 h-10 bg-linear-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+									{user?.username?.charAt(0).toUpperCase() || "J"}
+								</div>
+								<div className="flex-1">
+									<p className="text-sm font-medium text-gray-900">
+										{user?.username || "John Doe"}
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
+					)}
 
 					{/* Navigation Items */}
 					<div className="flex-1 p-4 overflow-y-auto">
@@ -226,7 +238,7 @@ export default function Sidebar({
 									key={item.title}
 									title={item.title}
 									icon={item.icon}
-									count={item.count}
+									count={count[item.type]}
 									active={activeItem === item.title}
 									onClick={() => setActiveItem(item.title)}
 								/>
@@ -239,16 +251,27 @@ export default function Sidebar({
 							Account
 						</p>
 						<div className="mx-2">
-							<Button
-								startIcon={<LogoutIcon size={20} />}
-								onClick={logoutHandler}
-								variant="danger-secondary"
-								fullWidth
-								loadingText="Logging out..."
-								loading={logout}
-							>
-								Logout
-							</Button>
+							{user ? (
+								<Button
+									startIcon={<LogoutIcon size={20} />}
+									onClick={logoutHandler}
+									variant="danger-secondary"
+									fullWidth
+									loadingText="Logging out..."
+									loading={logout}
+								>
+									Logout
+								</Button>
+							) : (
+								<Button
+									startIcon={<LogoutIcon size={20} />}
+									onClick={() => navigate("/signin")}
+									variant="secondary"
+									fullWidth
+								>
+									Login
+								</Button>
+							)}
 						</div>
 					</div>
 				</nav>

@@ -4,6 +4,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import { Toaster } from "sonner";
 import Protected from "./components/Protected";
+import SharedBrain from "./pages/ShareBrain";
 
 function App() {
 	return (
@@ -20,6 +21,10 @@ function App() {
 							<Dashboard />
 						</Protected>
 					}
+				/>
+				<Route
+					path="/share/:hash"
+					element={<SharedBrain />}
 				/>
 				<Route
 					path="/signup"
