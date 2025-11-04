@@ -49,7 +49,11 @@ function Dashboard() {
 			);
 			if (response.status === 200) {
 				console.log(response.data);
-				navigator.clipboard.writeText(response.data.link.hash);
+				navigator.clipboard.writeText(
+					`${import.meta.env.VITE_FRONTEND_URL}/share/${
+						response.data.link.hash
+					}`,
+				);
 				toast.success("Link copied to clipboard");
 			}
 		} catch (error) {
@@ -99,15 +103,11 @@ function Dashboard() {
 				onClose={() => setSidebarOpen(false)}
 				filter={filterCardsByType}
 				count={{
-					youtube: filteredCards.filter(
-						(card) => card.type === "youtube",
-					).length,
-					tweet: filteredCards.filter(
-						(card) => card.type === "tweet",
-					).length,
-					instagram: filteredCards.filter(
-						(card) => card.type === "instagram",
-					).length,
+					youtube: filteredCards.filter((card) => card.type === "youtube")
+						.length,
+					tweet: filteredCards.filter((card) => card.type === "tweet").length,
+					instagram: filteredCards.filter((card) => card.type === "instagram")
+						.length,
 					all: filteredCards.length,
 				}}
 			/>
