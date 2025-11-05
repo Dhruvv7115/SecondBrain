@@ -8,7 +8,7 @@ const contentSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["tweet", "youtube", "instagram"],
+    enum: ["tweet", "youtube", "instagram", "linkedin"],
     required: true,
   },
   title: {

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CrossIcon from "./icons/CrossIcon";
 import Input from "./Input";
 import Button from "./Button";
@@ -11,6 +11,7 @@ import TagIcon from "./icons/TagIcon";
 import axios from "axios";
 import ExclamationIcon from "./icons/ExclamationIcon";
 import { toast } from "sonner";
+import LinkedInIcon from "./icons/LinkedInIcon.tsx";
 
 export default function AddContentModal({
 	open,
@@ -21,9 +22,9 @@ export default function AddContentModal({
 }) {
 	const [title, setTitle] = useState<string>("");
 	const [link, setLink] = useState<string>("");
-	const [type, setType] = useState<"youtube" | "tweet" | "instagram">(
-		"youtube",
-	);
+	const [type, setType] = useState<
+		"youtube" | "tweet" | "instagram" | "linkedin"
+	>("youtube");
 	const [tags, setTags] = useState<string[]>([]);
 	const [tagInput, setTagInput] = useState<string>("");
 	const [error, setError] = useState<string>("");
@@ -99,7 +100,7 @@ export default function AddContentModal({
 								<CrossIcon size={24} />
 							</span>
 						</div>
-						<div className="w-full flex">
+						<div>
 							<Input
 								label="Title"
 								placeholder="Enter title"
@@ -108,10 +109,10 @@ export default function AddContentModal({
 								onChange={(e) => {
 									setTitle(e.target.value);
 								}}
-								className="min-w-sm"
+								className="w-full"
 							/>
 						</div>
-						<div className="w-full flex">
+						<div>
 							<Input
 								label="Link"
 								placeholder="Enter link"
@@ -120,7 +121,7 @@ export default function AddContentModal({
 								onChange={(e) => {
 									setLink(e.target.value);
 								}}
-								className="min-w-sm"
+								className="w-full"
 							/>
 						</div>
 						<div className="w-full flex">
@@ -128,9 +129,8 @@ export default function AddContentModal({
 								Type of content
 							</label>
 						</div>
-						<div className="w-full flex gap-2">
+						<div className="w-full flex gap-4 flex-wrap px-1">
 							<Button
-								className="w-full"
 								variant={type === "youtube" ? "primary" : "secondary"}
 								onClick={() => setType("youtube")}
 								startIcon={<YoutubeIcon size={16} />}
@@ -138,7 +138,6 @@ export default function AddContentModal({
 								Youtube
 							</Button>
 							<Button
-								className="w-full"
 								variant={type === "tweet" ? "primary" : "secondary"}
 								onClick={() => setType("tweet")}
 								startIcon={
@@ -151,12 +150,18 @@ export default function AddContentModal({
 								Tweet
 							</Button>
 							<Button
-								className="w-full"
 								variant={type === "instagram" ? "primary" : "secondary"}
 								onClick={() => setType("instagram")}
 								startIcon={<InstagramIcon size={16} />}
 							>
 								Instagram
+							</Button>
+							<Button
+								variant={type === "linkedin" ? "primary" : "secondary"}
+								onClick={() => setType("linkedin")}
+								startIcon={<LinkedInIcon size={16} />}
+							>
+								LinkedIn
 							</Button>
 						</div>
 						<div className="w-full">

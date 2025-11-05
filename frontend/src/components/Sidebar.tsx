@@ -13,12 +13,13 @@ import axios from "axios";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import LinkedInIcon from "./icons/LinkedInIcon";
 
 interface Item {
 	title: string;
 	icon: React.ReactNode;
 	active?: boolean;
-	type: "all" | "youtube" | "tweet" | "instagram";
+	type: "all" | "youtube" | "tweet" | "instagram" | "linkedin";
 }
 const items: Item[] = [
 	{
@@ -46,6 +47,11 @@ const items: Item[] = [
 		title: "Instagram",
 		icon: <InstagramIcon />,
 		type: "instagram",
+	},
+	{
+		title: "LinkedIn",
+		icon: <LinkedInIcon />,
+		type: "linkedin",
 	},
 ];
 

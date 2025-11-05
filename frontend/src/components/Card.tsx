@@ -5,12 +5,13 @@ import DocumentIcon from "./icons/DocumentIcon";
 import YoutubeIcon from "./icons/YoutubeIcon";
 import XTwitterIcon from "./icons/XTwitterIcon";
 import InstagramIcon from "./icons/InstagramIcon";
+import LinkedInIcon from "./icons/LinkedInIcon";
 
 export interface CardProps {
 	_id: string;
 	title: string;
 	link: string;
-	type: "tweet" | "youtube" | "instagram";
+	type: "tweet" | "youtube" | "instagram" | "linkedin";
 	onDelete?: (_id: string) => void;
 	onShare?: () => void;
 }
@@ -68,6 +69,8 @@ export default function Card({
 				return <YoutubeIcon size={16} />;
 			case "tweet":
 				return <XTwitterIcon size={16} />;
+			case "linkedin":
+				return <LinkedInIcon size={16} />;
 			case "instagram":
 				return <InstagramIcon size={16} />;
 			default:
@@ -82,6 +85,8 @@ export default function Card({
 				return "bg-red-100 text-red-700 border-red-200";
 			case "tweet":
 				return "bg-neutral-200 text-neutral-900 border-neutral-300";
+			case "linkedin":
+				return "bg-sky-100 text-sky-700 border-sky-200";
 			case "instagram":
 				return "bg-gradient-to-br from-pink-500/10 via-fuchsia-500/20 to-purple-600/10 text-fuchsia-600 border-purple-200";
 			default:
@@ -116,8 +121,23 @@ export default function Card({
 			if (cleanUrl.endsWith("/")) {
 				cleanUrl = cleanUrl.slice(0, -1);
 			}
-			console.log(cleanUrl+"/embed")
+			console.log(cleanUrl + "/embed");
 			return `${cleanUrl}/embed`;
+		} catch {
+			setHasError(true);
+			return "";
+		}
+	};
+
+	// Process LinkedIn URL
+	const getLinkedInEmbedUrl = (url: string) => {
+		try {
+			// Regex to find the activity ID from various LinkedIn URL formats
+			// e.g., /posts/...-activity-7391162107721003009-iqmI
+			// or /.../urn:li:activity:73911621077210030
+			const urlLength = url.split(":").length;
+			const postId = url.split(":")[urlLength - 1].replace("/", "");
+			return `https://www.linkedin.com/embed/feed/update/urn:li:activity:${postId}?collapsed=1`;
 		} catch {
 			setHasError(true);
 			return "";
@@ -353,6 +373,35 @@ export default function Card({
 										setHasError(true);
 									}}
 								/>
+							</div>
+						)}
+					</div>
+				)}
+
+				{/* LinkedIn Embed */}
+				{type === "linkedin" && (
+					<div className="relative w-full">
+						{isLoading && (
+							<div className="absolute inset-0 z-10 bg-white">
+								<LoadingState />
+							</div>
+						)}
+						{hasError ? (
+							<ErrorState />
+						) : (
+							<div
+								className="relative w-full overflow-y-auto h-fit"
+								style={{ paddingBottom: "125%" }}
+							>
+								<iframe
+									width="200px"
+									height="400px"
+									className="absolute inset-0 w-full h-full"
+									src={getLinkedInEmbedUrl(link)}
+									title="Embedded post"
+									onLoad={() => setIsLoading(false)}
+									onError={() => setHasError(true)}
+								></iframe>
 							</div>
 						)}
 					</div>
