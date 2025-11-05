@@ -69,7 +69,7 @@ export default function Sidebar({
 	isOpen: boolean;
 	onClose: () => void;
 	filter: (type: string) => void;
-	count: Record<"youtube" | "tweet" | "instagram" | "all", number>;
+	count: Record<"all" | "youtube" | "tweet" | "instagram" | "linkedin", number>;
 }) {
 	const [activeItem, setActiveItem] = useState("All Content");
 	const [user, setUser] = useState<User | null>(null);
@@ -169,16 +169,35 @@ export default function Sidebar({
 							Account
 						</p>
 						<div className="space-y-1">
-							<Button
-								startIcon={<LogoutIcon size={20} />}
-								onClick={logoutHandler}
-								variant="danger-secondary"
-								fullWidth
-								loadingText="Logging out..."
-								loading={logout}
-							>
-								Logout
-							</Button>
+							{user ? (
+								<Button
+									startIcon={<LogoutIcon size={20} />}
+									onClick={logoutHandler}
+									variant="danger-secondary"
+									fullWidth
+									loadingText="Logging out..."
+									loading={logout}
+								>
+									Logout
+								</Button>
+							) : (
+								<Button
+									startIcon={<LogoutIcon size={20} />}
+									onClick={() => {
+										setLogout(true);
+										setTimeout(() => {
+											navigate("/signin");
+											toast.success("Navigated to login page");
+										}, 1500);
+									}}
+									variant="secondary"
+									loadingText="Navigating..."
+									loading={logout}
+									fullWidth
+								>
+									Login
+								</Button>
+							)}
 						</div>
 					</div>
 				</nav>
@@ -273,6 +292,8 @@ export default function Sidebar({
 									startIcon={<LogoutIcon size={20} />}
 									onClick={() => navigate("/signin")}
 									variant="secondary"
+									loadingText="Navigating..."
+									loading={logout}
 									fullWidth
 								>
 									Login

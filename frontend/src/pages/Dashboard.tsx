@@ -108,6 +108,8 @@ function Dashboard() {
 					tweet: filteredCards.filter((card) => card.type === "tweet").length,
 					instagram: filteredCards.filter((card) => card.type === "instagram")
 						.length,
+					linkedin: filteredCards.filter((card) => card.type === "linkedin")
+						.length,
 					all: filteredCards.length,
 				}}
 			/>

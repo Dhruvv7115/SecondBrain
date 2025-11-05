@@ -13,7 +13,7 @@ interface BrainContent {
 	id: string;
 	title: string;
 	link: string;
-	type: "youtube" | "tweet" | "instagram";
+	type: "youtube" | "tweet" | "instagram" | "linkedin";
 	createdAt: string;
 	tags?: string[];
 	userId: string;
@@ -90,9 +90,7 @@ export default function SharedBrain() {
 				<span>
 					<LoadingSpinnerIcon />
 				</span>
-				<span>
-					Loading
-				</span>
+				<span>Loading</span>
 			</div>
 		);
 	}
@@ -161,6 +159,7 @@ export default function SharedBrain() {
 		youtube: brainData.content.filter((c) => c.type === "youtube").length,
 		tweet: brainData.content.filter((c) => c.type === "tweet").length,
 		instagram: brainData.content.filter((c) => c.type === "instagram").length,
+		linkedin: brainData.content.filter((c) => c.type === "linkedin").length,
 		all: brainData.content.length,
 	};
 	const filterCardsByType = (type: string) => {
