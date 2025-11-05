@@ -5,7 +5,6 @@ import Signin from "./pages/Signin";
 import { Toaster } from "sonner";
 import Protected from "./components/Protected";
 import SharedBrain from "./pages/ShareBrain";
-import LinkedInPost from "./pages/LinkedInPost";
 
 function App() {
 	return (
@@ -34,10 +33,6 @@ function App() {
 				<Route
 					path="/signin"
 					element={<Signin />}
-				/>
-				<Route
-					path="/linkedin"
-					element={<LinkedInPost />}
 				/>
 			</Routes>
 		</BrowserRouter>
